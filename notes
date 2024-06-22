@@ -1,0 +1,40 @@
+import React from 'react';
+
+class MyForm extends React.Component {
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target); // Get form data
+    const formValues = {};
+    for (let [name, value] of formData.entries()) {
+      formValues[name] = value;
+    }
+
+    // Include additional attributes from labels
+    const inputs = e.target.querySelectorAll('input, textarea');
+    inputs.forEach(input => {
+      const name = input.getAttribute('name');
+      const label = input.getAttribute('id');
+      const type = input.getAttribute('type');
+      const value = input.value;
+      formValues[name] = value;
+      formValues[label] = value;
+      formValues[`${name}_type`] = type;
+    });
+
+    console.log('Form values:', formValues);
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label htmlFor="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" />
+        <label htmlFor="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" />
+        <button type="submit">Submit</button>
+      </form>
+    );
+  }
+}
+
+export default MyForm;
